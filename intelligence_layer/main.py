@@ -111,13 +111,17 @@ async def generate_estimate(request: EstimateRequest):
         cat_totals["Labor"] += labor_cost
         
         base_cost = material_cost + labor_cost
+        
+        # Apply inflation adjustment for old data (e.g., from 2024)
+        if "2024" in item.source_date:
+            inflation_rate = 0.065 # 6.5% inflation over the last ~14 months
+            base_cost = base_cost * (1 + inflation_rate)
+            stale_warnings.append(f"Pricing data for {item.item} was 14 months old; applied +6.5% market inflation adjustment.")
+            
         adjusted_cost = base_cost * item.regional_adjustment * (1 + item.waste_factor)
         
         min_total += adjusted_cost * 0.9 
         max_total += adjusted_cost * 1.1
-        
-        if "2024" in item.source_date:
-            stale_warnings.append(f"Pricing data for {item.item} is >12 months old.")
 
     # Calculate cost drivers percentages
     total_raw = sum(cat_totals.values())
