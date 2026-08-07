@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function ContractorDashboard() {
+  const { t } = useLanguage();
   const [requests, setRequests] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [lineItems, setLineItems] = useState([]);
@@ -68,7 +70,7 @@ export default function ContractorDashboard() {
     <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'sans-serif' }}>
       {/* Sidebar - Request List */}
       <div style={{ width: '300px', borderRight: '1px solid #ddd', background: '#f8f9fa', padding: '1rem' }}>
-        <h3>Quote Requests ({requests.length})</h3>
+        <h3>{t('quote_requests')} ({requests.length})</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
           {requests.map(req => (
             <div 
@@ -97,7 +99,7 @@ export default function ContractorDashboard() {
         {selectedRequest ? (
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h2>Estimate Workspace: {selectedRequest.address}</h2>
+              <h2>{t('estimate_workspace')}: {selectedRequest.address}</h2>
               <span style={{ padding: '0.25rem 0.75rem', background: '#3498db', color: 'white', borderRadius: '16px', fontSize: '0.9em' }}>
                 {selectedRequest.status}
               </span>
@@ -213,7 +215,7 @@ export default function ContractorDashboard() {
                 <button 
                   onClick={saveQuote}
                   style={{ width: '100%', padding: '1rem', background: '#2c3e50', color: 'white', border: 'none', borderRadius: '8px', marginTop: '1rem', cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1em' }}>
-                  Save & Issue Quote
+                  {t('save_changes')}
                 </button>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import { Search, Bell, Heart, Home, Mail, SlidersHorizontal, ChevronRight } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -50,8 +51,9 @@ function MapEventHandler({ properties, onBoundsChanged, onMapClick }) {
 }
 
 export default function HomeownerFlow() {
-  const [searchQuery, setSearchQuery] = useState('San Jose, CA');
-  const [mapCenter, setMapCenter] = useState([37.3382, -121.8863]);
+  const { t } = useLanguage();
+  const [searchQuery, setSearchQuery] = useState('Montreal');
+  const [mapCenter, setMapCenter] = useState([45.5017, -73.5673]);
   const [properties, setProperties] = useState([]);
   const [visibleProperties, setVisibleProperties] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState(null);
@@ -135,7 +137,7 @@ export default function HomeownerFlow() {
     // Fetch REAL properties from intelligence layer
     let fetchedProps = [];
     try {
-      const propRes = await fetch(`http://localhost:8000/properties?query=${encodeURIComponent(searchQuery)}`);
+      const propRes = await fetch(`/api/properties?query=${encodeURIComponent(searchQuery)}`);
       const propData = await propRes.json();
       fetchedProps = propData.properties || [];
     } catch (error) {
@@ -238,52 +240,52 @@ export default function HomeownerFlow() {
     if (walkthroughStep === 0) {
       return (
         <div style={walkthroughCard}>
-          <h3>What are you renovating?</h3>
-          <button style={btnChoice} onClick={() => answerQuestion('project_type', 'Kitchen')}>Kitchen</button>
-          <button style={btnChoice} onClick={() => answerQuestion('project_type', 'Bathroom')}>Bathroom</button>
-          <button style={btnChoice} onClick={() => answerQuestion('project_type', 'Full House')}>Full House</button>
+          <h3>{t('step_kitchen')}</h3>
+          <p>{t('kitchen_desc')}</p>
+          <button style={btnChoice} onClick={() => answerQuestion('project_type', 'Kitchen')}>{t('btn_yes')}</button>
+          <button style={btnChoice} onClick={() => setWalkthroughStep(1)}>{t('btn_skip')}</button>
         </div>
       );
     }
     if (walkthroughStep === 1) {
       return (
         <div style={walkthroughCard}>
-          <h3>What are you changing in the Bathroom?</h3>
-          <button style={btnChoice} onClick={() => answerQuestion('bathroom_scope', 'Everything')}>Everything</button>
-          <button style={btnChoice} onClick={() => answerQuestion('bathroom_scope', 'Fixtures only')}>Fixtures only</button>
-          <button style={btnChoice} onClick={() => answerQuestion('bathroom_scope', 'Shower/tub')}>Shower/tub</button>
-          <button style={btnChoice} onClick={() => answerQuestion('bathroom_scope', 'Cosmetic update')}>Cosmetic update</button>
+          <h3>{t('step_bathroom_scope')}</h3>
+          <button style={btnChoice} onClick={() => answerQuestion('bathroom_scope', 'Everything')}>{t('everything')}</button>
+          <button style={btnChoice} onClick={() => answerQuestion('bathroom_scope', 'Fixtures only')}>{t('fixtures_only')}</button>
+          <button style={btnChoice} onClick={() => answerQuestion('bathroom_scope', 'Shower/tub')}>{t('shower_tub')}</button>
+          <button style={btnChoice} onClick={() => answerQuestion('bathroom_scope', 'Cosmetic update')}>{t('cosmetic_update')}</button>
         </div>
       );
     }
     if (walkthroughStep === 2) {
       return (
         <div style={walkthroughCard}>
-          <h3>What are you changing in the Kitchen?</h3>
-          <button style={btnChoice} onClick={() => answerQuestion('kitchen_scope', 'Everything')}>Everything</button>
-          <button style={btnChoice} onClick={() => answerQuestion('kitchen_scope', 'Keep appliances')}>Keep appliances</button>
-          <button style={btnChoice} onClick={() => answerQuestion('kitchen_scope', 'Cosmetic only')}>Cosmetic only</button>
+          <h3>{t('step_kitchen_scope')}</h3>
+          <button style={btnChoice} onClick={() => answerQuestion('kitchen_scope', 'Everything')}>{t('everything')}</button>
+          <button style={btnChoice} onClick={() => answerQuestion('kitchen_scope', 'Keep appliances')}>{t('keep_appliances')}</button>
+          <button style={btnChoice} onClick={() => answerQuestion('kitchen_scope', 'Cosmetic only')}>{t('cosmetic_only')}</button>
         </div>
       );
     }
     if (walkthroughStep === 3) {
       return (
         <div style={walkthroughCard}>
-          <h3>Are you moving plumbing or changing the layout?</h3>
-          <button style={btnChoice} onClick={() => answerQuestion('layout_change', 'Yes')}>Yes</button>
-          <button style={btnChoice} onClick={() => answerQuestion('layout_change', 'No')}>No</button>
-          <button style={btnChoice} onClick={() => answerQuestion('layout_change', 'Not sure')}>Not sure</button>
+          <h3>{t('step_layout_change')}</h3>
+          <button style={btnChoice} onClick={() => answerQuestion('layout_change', 'Yes')}>{t('btn_yes')}</button>
+          <button style={btnChoice} onClick={() => answerQuestion('layout_change', 'No')}>{t('btn_no')}</button>
+          <button style={btnChoice} onClick={() => answerQuestion('layout_change', 'Not sure')}>{t('not_sure')}</button>
         </div>
       );
     }
     if (walkthroughStep === 4) {
       return (
         <div style={walkthroughCard}>
-          <h3>Scenario Modeling: Quality Level</h3>
-          <p style={{fontSize: '0.85em', color: '#666'}}>Changes actual materials (e.g. Laminate vs Quartz vs Natural Stone)</p>
-          <button style={btnChoice} onClick={() => answerQuestion('quality', 'Budget')}>Budget (Laminate/Basic)</button>
-          <button style={btnChoice} onClick={() => answerQuestion('quality', 'Standard')}>Standard (Quartz)</button>
-          <button style={btnChoice} onClick={() => answerQuestion('quality', 'Premium')}>Premium (Natural Stone/Custom)</button>
+          <h3>{t('step_quality')}</h3>
+          <p style={{fontSize: '0.85em', color: '#666'}}>{t('quality_desc')}</p>
+          <button style={btnChoice} onClick={() => answerQuestion('quality', 'Budget')}>{t('quality_budget')}</button>
+          <button style={btnChoice} onClick={() => answerQuestion('quality', 'Standard')}>{t('quality_standard')}</button>
+          <button style={btnChoice} onClick={() => answerQuestion('quality', 'Premium')}>{t('quality_premium')}</button>
         </div>
       );
     }
@@ -295,11 +297,11 @@ export default function HomeownerFlow() {
       
       {/* Sidebar */}
       <div style={{ width: '70px', borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1rem 0', background: 'white', zIndex: 10 }}>
-        <div style={navItemStyle}><Search size={24} /><span style={navTextStyle}>Search</span></div>
-        <div style={navItemStyle}><Bell size={24} /><span style={navTextStyle}>Updates</span></div>
-        <div style={navItemStyle}><Heart size={24} /><span style={navTextStyle}>Saved</span></div>
-        <div style={navItemStyle}><Home size={24} /><span style={navTextStyle}>Plan</span></div>
-        <div style={navItemStyle}><Mail size={24} /><span style={navTextStyle}>Inbox</span></div>
+        <div style={navItemStyle}><Search size={24} /><span style={navTextStyle}>{t('nav_search')}</span></div>
+        <div style={navItemStyle}><Bell size={24} /><span style={navTextStyle}>{t('nav_updates')}</span></div>
+        <div style={navItemStyle}><Heart size={24} /><span style={navTextStyle}>{t('nav_saved')}</span></div>
+        <div style={navItemStyle}><Home size={24} /><span style={navTextStyle}>{t('nav_plan')}</span></div>
+        <div style={navItemStyle}><Mail size={24} /><span style={navTextStyle}>{t('nav_inbox')}</span></div>
       </div>
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -311,7 +313,7 @@ export default function HomeownerFlow() {
               style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1rem' }} 
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search address, city, ZIP"
+              placeholder={t('search_placeholder')}
             />
             <Search size={18} color="#888" onClick={handleSearch} style={{ cursor: 'pointer' }} />
           </form>
@@ -333,7 +335,7 @@ export default function HomeownerFlow() {
               ))}
               {customMarker && (
                 <Marker position={customMarker}>
-                  <Popup>Custom Selected Location</Popup>
+                  <Popup>{t('custom_location')}</Popup>
                 </Marker>
               )}
             </MapContainer>
@@ -343,16 +345,16 @@ export default function HomeownerFlow() {
           <div style={{ width: '45%', minWidth: '400px', maxWidth: '600px', background: 'white', boxShadow: '-2px 0 10px rgba(0,0,0,0.1)', zIndex: 10, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
             
             {loading ? (
-              <div style={{ padding: '2rem', textAlign: 'center' }}>Searching {searchQuery}...</div>
+              <div style={{ padding: '2rem', textAlign: 'center' }}>{t('searching')} {searchQuery}...</div>
             ) : selectedProperty ? (
               <div>
                 <div style={{ position: 'relative' }}>
                   <img src={selectedProperty.image} alt="Property" style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
                   <button onClick={() => setSelectedProperty(null)} style={{ position: 'absolute', top: '10px', left: '10px', background: 'white', border: 'none', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer' }}>←</button>
                   <div style={{ position: 'absolute', bottom: '10px', left: '10px', background: 'rgba(255,255,255,0.9)', padding: '0.5rem', borderRadius: '4px', fontSize: '0.8em' }}>
-                    <strong>Property Intelligence</strong><br/>
-                    Estimated area: {selectedProperty.sqft} sqft<br/>
-                    Building type: Single Family
+                    <strong>{t('property_intelligence')}</strong><br/>
+                    {t('est_area')}: {selectedProperty.sqft} {t('sqft')}<br/>
+                    {t('building_type')}: {t('single_family')}
                   </div>
                 </div>
                 
@@ -362,20 +364,20 @@ export default function HomeownerFlow() {
 
                   {quoteRequested ? (
                     <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-                      <h2 style={{ color: '#2ecc71', margin: '0 0 1rem 0' }}>Quote Requested!</h2>
-                      <button style={filterBtnStyle} onClick={() => { setQuoteRequested(false); setSelectedProperty(null); }}>Back to Search</button>
+                      <h2 style={{ color: '#2ecc71', margin: '0 0 1rem 0' }}>{t('quote_requested')}!</h2>
+                      <button style={filterBtnStyle} onClick={() => { setQuoteRequested(false); setSelectedProperty(null); }}>{t('back_to_search')}</button>
                     </div>
                   ) : walkthroughStep < 5 ? (
                     <div>
-                      <h2 style={{fontSize: '1.2rem', marginBottom: '1rem'}}>Adaptive Walkthrough</h2>
+                      <h2 style={{fontSize: '1.2rem', marginBottom: '1rem'}}>{t('adaptive_walkthrough')}</h2>
                       {renderWalkthrough()}
                     </div>
                   ) : (
                     <div>
-                      <h2 style={{fontSize: '1.2rem'}}>Renovation Intelligence Estimate</h2>
+                      <h2 style={{fontSize: '1.2rem'}}>{t('renovation_estimate')}</h2>
                       
                       {estimateLoading || !estimateData ? (
-                        <div style={{ padding: '2rem', textAlign: 'center', color: '#006aff' }}>Initializing Construction Agents...</div>
+                        <div style={{ padding: '2rem', textAlign: 'center', color: '#006aff' }}>{t('initializing_agents')}...</div>
                       ) : (
                         <div style={{ background: '#f8f9fa', borderRadius: '8px', padding: '1.5rem' }}>
                            
@@ -385,16 +387,16 @@ export default function HomeownerFlow() {
                              </div>
                            )}
 
-                           <p style={{ margin: '0 0 0.5rem 0', color: '#666' }}>Estimated Range ({scopeAnswers.quality} Quality)</p>
+                           <p style={{ margin: '0 0 0.5rem 0', color: '#666' }}>{t('estimated_range')} ({scopeAnswers.quality} {t('quality')})</p>
                            <h1 style={{ margin: 0, color: '#2b2b2b', fontSize: '2.2rem' }}>
                              ${estimateData.min_total.toLocaleString()} - ${estimateData.max_total.toLocaleString()}
                            </h1>
                            <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
-                             <span style={{ fontSize: '0.9em', color: '#888' }}>Confidence: <strong>{estimateData.confidence_level}</strong> ({estimateData.confidence_score * 100}%)</span>
+                             <span style={{ fontSize: '0.9em', color: '#888' }}>{t('confidence')}: <strong>{estimateData.confidence_level}</strong> ({estimateData.confidence_score * 100}%)</span>
                            </div>
 
                            <div style={{ marginTop: '1.5rem' }}>
-                             <strong>Major Cost Drivers:</strong>
+                             <strong>{t('cost_drivers')}:</strong>
                              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '8px' }}>
                                {Object.entries(estimateData.cost_drivers || {}).map(([key, pct]) => (
                                  <div key={key} style={{ display: 'flex', alignItems: 'center', fontSize: '0.85em' }}>
@@ -409,7 +411,7 @@ export default function HomeownerFlow() {
                            </div>
 
                            <div style={{ marginTop: '1.5rem' }}>
-                             <strong>Assumptions:</strong>
+                             <strong>{t('assumptions')}:</strong>
                              <ul style={{ fontSize: '0.85rem', color: '#555', paddingLeft: '20px' }}>
                                {estimateData.assumptions.map((a, i) => <li key={i}>{a}</li>)}
                              </ul>
