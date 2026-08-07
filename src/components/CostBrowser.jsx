@@ -35,22 +35,35 @@ export default function CostBrowser() {
           {/* Inventory List */}
           <div className="glass" style={{ flex: '1', background: 'white', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
             <h3 style={{ marginTop: 0, color: '#475569', marginBottom: '1rem' }}>{t('inventory_assemblies') || 'Reconstruction Assemblies'}</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {inventory.map(item => (
-                <div 
-                  key={item.id}
-                  className="pulse-hover"
-                  onClick={() => setSelectedItem(item)}
-                  style={{
-                    padding: '1rem',
-                    border: selectedItem?.id === item.id ? '2px solid #3b82f6' : '1px solid #e2e8f0',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    background: selectedItem?.id === item.id ? '#f0f9ff' : 'white'
-                  }}
-                >
-                  <strong style={{ display: 'block', color: '#1e293b' }}>{item.name}</strong>
-                  <span style={{ fontSize: '0.85em', color: '#64748b' }}>{item.category} • {item.unit}</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', maxHeight: '75vh', overflowY: 'auto', paddingRight: '0.5rem' }}>
+              {Object.entries(
+                inventory.reduce((acc, item) => {
+                  acc[item.category] = acc[item.category] || [];
+                  acc[item.category].push(item);
+                  return acc;
+                }, {})
+              ).map(([category, items]) => (
+                <div key={category}>
+                  <h4 style={{ margin: '0 0 0.5rem 0', color: '#1e293b', fontSize: '0.9em', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{category}</h4>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    {items.map(item => (
+                      <div 
+                        key={item.id}
+                        className="pulse-hover"
+                        onClick={() => setSelectedItem(item)}
+                        style={{
+                          padding: '1rem',
+                          border: selectedItem?.id === item.id ? '2px solid #3b82f6' : '1px solid #e2e8f0',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          background: selectedItem?.id === item.id ? '#f0f9ff' : 'white'
+                        }}
+                      >
+                        <strong style={{ display: 'block', color: '#1e293b' }}>{item.name}</strong>
+                        <span style={{ fontSize: '0.85em', color: '#64748b' }}>{item.subcategory} • {item.unit}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
@@ -69,8 +82,23 @@ export default function CostBrowser() {
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: '#334155' }}>
                       <li style={listItemStyle}><strong>Material:</strong> {selectedItem.parts_breakdown.material_name}</li>
                       <li style={listItemStyle}><strong>Retail Price:</strong> ${selectedItem.parts_breakdown.retail_price.toFixed(2)}</li>
-                      <li style={listItemStyle}><strong>Cost per {selectedItem.unit}:</strong> ${selectedItem.parts_breakdown.unit_cost_per_sf?.toFixed(2) || selectedItem.parts_breakdown.unit_cost_per_lf?.toFixed(2)}</li>
+                      <li style={listItemStyle}><strong>Cost per {selectedItem.unit}:</strong> ${(selectedItem.parts_breakdown.unit_cost_per_sf || selectedItem.parts_breakdown.unit_cost_per_lf || selectedItem.parts_breakdown.unit_cost_per_ea || 0).toFixed(2)}</li>
                       <li style={listItemStyle}><strong>Source:</strong> <span style={tagStyle}>{selectedItem.parts_breakdown.source}</span></li>
+                      {selectedItem.parts_breakdown.brand_spec && (
+                        <li style={{...listItemStyle, fontSize: '0.9em', color: '#475569'}}>
+                          <strong>Brand/Spec:</strong> {selectedItem.parts_breakdown.brand_spec}
+                        </li>
+                      )}
+                      {selectedItem.parts_breakdown.tech_spec && (
+                        <li style={{...listItemStyle, fontSize: '0.9em', color: '#475569'}}>
+                          <strong>Tech Specs:</strong> {selectedItem.parts_breakdown.tech_spec}
+                        </li>
+                      )}
+                      {selectedItem.parts_breakdown.compliance && (
+                        <li style={{...listItemStyle, fontSize: '0.9em', color: '#10b981'}}>
+                          <strong>Compliance:</strong> ✓ {selectedItem.parts_breakdown.compliance}
+                        </li>
+                      )}
                     </ul>
                   </div>
 

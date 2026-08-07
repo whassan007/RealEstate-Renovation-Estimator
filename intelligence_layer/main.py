@@ -227,51 +227,8 @@ async def get_inventory():
     Returns the reconstruction inventory and respective pricing breakdown.
     For the Admin Cost Browser.
     """
-    drywall_retail_price = 17.98 # CAD per sheet
-    cabinet_retail_price = 349.00 # CAD per LF base
-    
-    inventory = [
-        {
-            "id": "drywall_interior",
-            "name": "Install Drywall Interior Wall",
-            "category": "Walls",
-            "unit": "SF",
-            "parts_breakdown": {
-                "material_name": "1/2 in. drywall 4 ft x 8 ft",
-                "retail_price": drywall_retail_price,
-                "unit_cost_per_sf": drywall_retail_price / 32,
-                "source": "Home Depot CA"
-            },
-            "installation_breakdown": {
-                "labor_rate_per_unit": 1.50,
-                "equipment_per_unit": 0.10,
-                "waste_factor_pct": 10,
-                "delivery_base": 75.0,
-                "source": "DDC CWICR"
-            }
-        },
-        {
-            "id": "cabinet_replace",
-            "name": "Cabinet Replacement",
-            "category": "Kitchen",
-            "unit": "LF",
-            "parts_breakdown": {
-                "material_name": "Base Cabinet 30 in.",
-                "retail_price": cabinet_retail_price,
-                "unit_cost_per_lf": cabinet_retail_price,
-                "source": "Home Depot CA"
-            },
-            "installation_breakdown": {
-                "labor_rate_per_unit": 95.00,
-                "equipment_per_unit": 5.00,
-                "waste_factor_pct": 5,
-                "delivery_base": 150.0,
-                "source": "RSMeans"
-            }
-        }
-    ]
-    
-    return {"inventory": inventory}
+    from inventory_data import inventory_catalog
+    return {"inventory": inventory_catalog}
 
 if __name__ == "__main__":
     import uvicorn
