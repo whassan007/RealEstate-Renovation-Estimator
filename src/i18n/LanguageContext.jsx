@@ -86,7 +86,14 @@ const translations = {
     quote: "Quote",
     adjust_margin: "Adjust Margin %",
     approve_quote: "Approve Quote",
-    save_changes: "Save Changes"
+    save_changes: "Save Changes",
+    admin_cost_browser: 'Cost Transparency Browser',
+    nav_admin: 'Admin Costs',
+    inventory_assemblies: 'Reconstruction Assemblies',
+    parts_breakdown: 'Parts & Materials Breakdown',
+    install_breakdown: 'Installation & Labor Breakdown',
+    loading_inventory: 'Loading Inventory...',
+    select_inventory_item: 'Select an assembly to view its exact cost breakdown.'
   },
   fr: {
     // Navigation
@@ -173,7 +180,14 @@ const translations = {
     quote: "Devis",
     adjust_margin: "Ajuster la Marge %",
     approve_quote: "Approuver le Devis",
-    save_changes: "Enregistrer"
+    save_changes: "Enregistrer",
+    admin_cost_browser: 'Navigateur de Transparence des Coûts',
+    nav_admin: 'Coûts Admin',
+    inventory_assemblies: 'Assemblages de Reconstruction',
+    parts_breakdown: 'Répartition des Pièces et Matériaux',
+    install_breakdown: 'Répartition de l\'Installation et de la Main-d\'œuvre',
+    loading_inventory: 'Chargement de l\'Inventaire...',
+    select_inventory_item: 'Sélectionnez un assemblage pour afficher sa répartition exacte des coûts.'
   }
 };
 

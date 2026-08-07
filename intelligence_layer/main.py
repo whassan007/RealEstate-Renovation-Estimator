@@ -126,6 +126,7 @@ async def generate_estimate(request: EstimateRequest):
         final_cost = adjusted_cost + ohp_cost
         
         # Aggregate to categories
+        # Aggregate to categories
         cat_totals["Material"] += material_cost
         cat_totals["Labor"] += labor_cost
         cat_totals["Equipment"] += equipment_cost
@@ -149,6 +150,44 @@ async def generate_estimate(request: EstimateRequest):
         
         min_total += final_cost * 0.9 
         max_total += final_cost * 1.1
+
+    # Apply Timing Overhead and Market Price Markups
+    # Timing overhead is assumed 5% of base total for project management / delays
+    timing_overhead = (max_total + min_total) / 2 * 0.05
+    # Market markup due to inflation/volatility is 3%
+    market_markup = (max_total + min_total) / 2 * 0.03
+    
+    line_items.append(CostLineItem(
+        item="Timing / Schedule Overhead",
+        quantity=1,
+        unit="LS",
+        material_unit_cost=0,
+        labor_unit_cost=timing_overhead,
+        regional_adjustment=1.0,
+        waste_factor=0.0,
+        source="Market Timing Data",
+        source_date="2026-08-01",
+        confidence=0.90
+    ))
+    
+    line_items.append(CostLineItem(
+        item="Market Price Fluctuation Markup",
+        quantity=1,
+        unit="LS",
+        material_unit_cost=market_markup,
+        labor_unit_cost=0,
+        regional_adjustment=1.0,
+        waste_factor=0.0,
+        source="Market Volatility Index",
+        source_date="2026-08-01",
+        confidence=0.90
+    ))
+    
+    min_total += (timing_overhead + market_markup) * 0.9
+    max_total += (timing_overhead + market_markup) * 1.1
+    
+    cat_totals["Timing/Overhead"] = timing_overhead
+    cat_totals["Market Markup"] = market_markup
 
     # Calculate cost drivers percentages
     total_raw = sum(cat_totals.values())
@@ -181,6 +220,58 @@ async def get_properties(query: str):
     logger.info(f"Fetching real properties for query: {query}")
     properties = await fetch_real_properties(query)
     return {"properties": properties}
+
+@app.get("/inventory")
+async def get_inventory():
+    """
+    Returns the reconstruction inventory and respective pricing breakdown.
+    For the Admin Cost Browser.
+    """
+    drywall_retail_price = 17.98 # CAD per sheet
+    cabinet_retail_price = 349.00 # CAD per LF base
+    
+    inventory = [
+        {
+            "id": "drywall_interior",
+            "name": "Install Drywall Interior Wall",
+            "category": "Walls",
+            "unit": "SF",
+            "parts_breakdown": {
+                "material_name": "1/2 in. drywall 4 ft x 8 ft",
+                "retail_price": drywall_retail_price,
+                "unit_cost_per_sf": drywall_retail_price / 32,
+                "source": "Home Depot CA"
+            },
+            "installation_breakdown": {
+                "labor_rate_per_unit": 1.50,
+                "equipment_per_unit": 0.10,
+                "waste_factor_pct": 10,
+                "delivery_base": 75.0,
+                "source": "DDC CWICR"
+            }
+        },
+        {
+            "id": "cabinet_replace",
+            "name": "Cabinet Replacement",
+            "category": "Kitchen",
+            "unit": "LF",
+            "parts_breakdown": {
+                "material_name": "Base Cabinet 30 in.",
+                "retail_price": cabinet_retail_price,
+                "unit_cost_per_lf": cabinet_retail_price,
+                "source": "Home Depot CA"
+            },
+            "installation_breakdown": {
+                "labor_rate_per_unit": 95.00,
+                "equipment_per_unit": 5.00,
+                "waste_factor_pct": 5,
+                "delivery_base": 150.0,
+                "source": "RSMeans"
+            }
+        }
+    ]
+    
+    return {"inventory": inventory}
 
 if __name__ == "__main__":
     import uvicorn
