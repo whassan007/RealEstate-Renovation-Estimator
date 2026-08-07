@@ -67,25 +67,27 @@ export default function ContractorDashboard() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'sans-serif' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'Inter, sans-serif', background: '#f8fafc' }}>
       {/* Sidebar - Request List */}
-      <div style={{ width: '300px', borderRight: '1px solid #ddd', background: '#f8f9fa', padding: '1rem' }}>
-        <h3>{t('quote_requests')} ({requests.length})</h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
+      <div className="glass" style={{ width: '320px', borderRight: '1px solid rgba(0,0,0,0.05)', background: '#ffffff', padding: '1.5rem', zIndex: 10 }}>
+        <h3 style={{ margin: '0 0 1.5rem 0', color: '#1e293b' }}>{t('quote_requests')} <span style={{ background: '#e2e8f0', padding: '2px 8px', borderRadius: '12px', fontSize: '0.8em' }}>{requests.length}</span></h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           {requests.map(req => (
             <div 
               key={req.id} 
+              className="pulse-hover"
               onClick={() => selectRequest(req)}
               style={{
-                padding: '1rem', 
-                background: selectedRequest?.id === req.id ? '#e3f2fd' : 'white', 
-                border: '1px solid #ccc',
-                borderRadius: '8px',
-                cursor: 'pointer'
+                padding: '1.25rem', 
+                background: selectedRequest?.id === req.id ? '#f0f9ff' : 'white', 
+                border: selectedRequest?.id === req.id ? '1px solid #3b82f6' : '1px solid #e2e8f0',
+                borderRadius: '12px',
+                cursor: 'pointer',
+                boxShadow: selectedRequest?.id === req.id ? '0 4px 6px -1px rgba(59, 130, 246, 0.1)' : '0 1px 2px 0 rgba(0,0,0,0.05)'
               }}
             >
-              <strong>{req.address}</strong>
-              <div style={{ fontSize: '0.85em', color: '#666', marginTop: '4px' }}>
+              <strong style={{ display: 'block', marginBottom: '6px', color: '#0f172a' }}>{req.address}</strong>
+              <div style={{ fontSize: '0.85em', color: '#64748b', display: 'flex', justifyContent: 'space-between' }}>
                 {req.status} • {req.property?.sqft} sq ft
               </div>
             </div>
@@ -95,9 +97,9 @@ export default function ContractorDashboard() {
       </div>
 
       {/* Main Workspace */}
-      <div style={{ flex: 1, padding: '2rem', background: '#fff' }}>
+      <div style={{ flex: 1, padding: '2rem', background: '#f8fafc', overflowY: 'auto' }}>
         {selectedRequest ? (
-          <div>
+          <div className="animate-fade-in" style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h2>{t('estimate_workspace')}: {selectedRequest.address}</h2>
               <span style={{ padding: '0.25rem 0.75rem', background: '#3498db', color: 'white', borderRadius: '16px', fontSize: '0.9em' }}>
@@ -222,8 +224,8 @@ export default function ContractorDashboard() {
 
           </div>
         ) : (
-          <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center', color: '#888', fontSize: '1.2em' }}>
-            Select a quote request from the left to view the workspace.
+          <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: '1.2em' }}>
+            {t('no_properties') /* Reusing this string as placeholder */}
           </div>
         )}
       </div>
@@ -231,7 +233,7 @@ export default function ContractorDashboard() {
   );
 }
 
-const thStyle = { padding: '12px', color: '#555' };
-const tdStyle = { padding: '12px' };
-const inputStyle = { padding: '8px', border: '1px solid #ccc', borderRadius: '4px', width: '100%', boxSizing: 'border-box' };
-const summaryRowStyle = { display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem', alignItems: 'center' };
+const thStyle = { padding: '16px', color: '#64748b', fontWeight: '500', borderBottom: '2px solid #e2e8f0', background: '#f8fafc' };
+const tdStyle = { padding: '16px', color: '#1e293b' };
+const inputStyle = { padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', width: '100%', boxSizing: 'border-box', outline: 'none', transition: 'border-color 0.2s' };
+const summaryRowStyle = { display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', alignItems: 'center', color: '#475569' };

@@ -239,11 +239,11 @@ export default function HomeownerFlow() {
   const renderWalkthrough = () => {
     if (walkthroughStep === 0) {
       return (
-        <div style={walkthroughCard}>
-          <h3>{t('step_kitchen')}</h3>
-          <p>{t('kitchen_desc')}</p>
-          <button style={btnChoice} onClick={() => answerQuestion('project_type', 'Kitchen')}>{t('btn_yes')}</button>
-          <button style={btnChoice} onClick={() => setWalkthroughStep(1)}>{t('btn_skip')}</button>
+        <div style={walkthroughCard} className="animate-slide-up pulse-hover">
+          <h3 style={{ margin: '0 0 10px 0', fontSize: '1.4em', color: '#1a202c' }}>{t('step_kitchen')}</h3>
+          <p style={{ color: '#4a5568', marginBottom: '1.5rem' }}>{t('kitchen_desc')}</p>
+          <button style={btnChoice} className="pulse-hover" onClick={() => answerQuestion('project_type', 'Kitchen')}>{t('btn_yes')}</button>
+          <button style={{...btnChoice, background: '#e2e8f0', color: '#4a5568'}} className="pulse-hover" onClick={() => setWalkthroughStep(1)}>{t('btn_skip')}</button>
         </div>
       );
     }
@@ -296,28 +296,30 @@ export default function HomeownerFlow() {
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', fontFamily: 'sans-serif' }}>
       
       {/* Sidebar */}
-      <div style={{ width: '70px', borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1rem 0', background: 'white', zIndex: 10 }}>
-        <div style={navItemStyle}><Search size={24} /><span style={navTextStyle}>{t('nav_search')}</span></div>
-        <div style={navItemStyle}><Bell size={24} /><span style={navTextStyle}>{t('nav_updates')}</span></div>
-        <div style={navItemStyle}><Heart size={24} /><span style={navTextStyle}>{t('nav_saved')}</span></div>
-        <div style={navItemStyle}><Home size={24} /><span style={navTextStyle}>{t('nav_plan')}</span></div>
-        <div style={navItemStyle}><Mail size={24} /><span style={navTextStyle}>{t('nav_inbox')}</span></div>
+      <div style={{ width: '80px', borderRight: '1px solid rgba(255,255,255,0.2)', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2rem 0', background: '#f8fafc', zIndex: 10, boxShadow: '2px 0 10px rgba(0,0,0,0.05)' }}>
+        <div style={navItemStyle} className="pulse-hover"><Search size={22} color="#475569" /><span style={navTextStyle}>{t('nav_search')}</span></div>
+        <div style={navItemStyle} className="pulse-hover"><Bell size={22} color="#475569" /><span style={navTextStyle}>{t('nav_updates')}</span></div>
+        <div style={navItemStyle} className="pulse-hover"><Heart size={22} color="#475569" /><span style={navTextStyle}>{t('nav_saved')}</span></div>
+        <div style={navItemStyle} className="pulse-hover"><Home size={22} color="#475569" /><span style={navTextStyle}>{t('nav_plan')}</span></div>
+        <div style={navItemStyle} className="pulse-hover"><Mail size={22} color="#475569" /><span style={navTextStyle}>{t('nav_inbox')}</span></div>
       </div>
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         
-        {/* Top Header */}
-        <div style={{ height: '64px', borderBottom: '1px solid #ddd', display: 'flex', alignItems: 'center', padding: '0 1rem', background: 'white', zIndex: 10 }}>
-          <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', background: '#f5f6f7', borderRadius: '24px', padding: '0.5rem 1rem', width: '300px' }}>
-            <input 
-              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1rem' }} 
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder={t('search_placeholder')}
-            />
-            <Search size={18} color="#888" onClick={handleSearch} style={{ cursor: 'pointer' }} />
-          </form>
-        </div>
+        {/* SEARCH HEADER */}
+          <div className="glass animate-slide-up" style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', zIndex: 1000, padding: '0.75rem 1.25rem', borderRadius: '50px', display: 'flex', alignItems: 'center', width: '380px' }}>
+            <Search size={20} color="#64748b" style={{ marginRight: '0.75rem' }} />
+            <form onSubmit={handleSearch} style={{ flex: 1, display: 'flex' }}>
+              <input 
+                type="text" 
+                placeholder={t('search_placeholder')}
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1.05rem', color: '#1e293b' }}
+              />
+              <button type="submit" style={{ display: 'none' }}>{t('search_button')}</button>
+            </form>
+          </div>
 
         {/* Split Screen Content */}
         <div style={{ flex: 1, display: 'flex', position: 'relative' }}>
@@ -342,17 +344,20 @@ export default function HomeownerFlow() {
           </div>
 
           {/* RIGHT PANEL */}
-          <div style={{ width: '45%', minWidth: '400px', maxWidth: '600px', background: 'white', boxShadow: '-2px 0 10px rgba(0,0,0,0.1)', zIndex: 10, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
+          <div className="animate-fade-in" style={{ width: '45%', minWidth: '420px', maxWidth: '650px', background: '#ffffff', boxShadow: '-10px 0 30px rgba(0,0,0,0.08)', zIndex: 10, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
             
             {loading ? (
-              <div style={{ padding: '2rem', textAlign: 'center' }}>{t('searching')} {searchQuery}...</div>
+              <div style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
+                <div className="spin" style={{ display: 'inline-block', marginBottom: '1rem' }}>⌛</div>
+                <div>{t('searching')} <strong>{searchQuery}</strong>...</div>
+              </div>
             ) : selectedProperty ? (
-              <div>
+              <div className="animate-fade-in">
                 <div style={{ position: 'relative' }}>
-                  <img src={selectedProperty.image} alt="Property" style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-                  <button onClick={() => setSelectedProperty(null)} style={{ position: 'absolute', top: '10px', left: '10px', background: 'white', border: 'none', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer' }}>←</button>
-                  <div style={{ position: 'absolute', bottom: '10px', left: '10px', background: 'rgba(255,255,255,0.9)', padding: '0.5rem', borderRadius: '4px', fontSize: '0.8em' }}>
-                    <strong>{t('property_intelligence')}</strong><br/>
+                  <img src={selectedProperty.image} alt="Property" style={{ width: '100%', height: '260px', objectFit: 'cover' }} />
+                  <button className="pulse-hover glass" onClick={() => setSelectedProperty(null)} style={{ position: 'absolute', top: '15px', left: '15px', color: '#1e293b', border: 'none', borderRadius: '50%', width: '40px', height: '40px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>←</button>
+                  <div className="glass" style={{ position: 'absolute', bottom: '15px', left: '15px', padding: '0.75rem 1rem', borderRadius: '8px', fontSize: '0.85em', color: '#1e293b' }}>
+                    <strong style={{ display: 'block', marginBottom: '4px' }}>✨ {t('property_intelligence')}</strong>
                     {t('est_area')}: {selectedProperty.sqft} {t('sqft')}<br/>
                     {t('building_type')}: {t('single_family')}
                   </div>
