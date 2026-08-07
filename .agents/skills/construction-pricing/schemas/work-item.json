@@ -1,0 +1,22 @@
+{
+  "title": "Work Assembly",
+  "type": "object",
+  "properties": {
+    "assembly": { "type": "string" },
+    "quantity": { "type": "number" },
+    "unit": { "type": "string" },
+    "materials": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "labor": {
+      "type": "object",
+      "properties": {
+        "trade": { "type": "string" },
+        "hours_per_unit": { "type": "number" }
+      }
+    },
+    "waste_factor": { "type": "number" }
+  },
+  "required": ["assembly", "quantity", "unit", "materials", "labor"]
+}

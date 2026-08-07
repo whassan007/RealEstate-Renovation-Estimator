@@ -67,61 +67,88 @@ async def generate_estimate(request: EstimateRequest):
     if quality == 'Budget': material_multiplier = 0.6
     if quality == 'Premium': material_multiplier = 1.8
     
-    line_items = [
-        CostLineItem(
-            item="Cabinet replacement",
-            quantity=24,
-            unit="LF",
-            material_unit_cost=185.0 * material_multiplier,
-            labor_unit_cost=95.0,
-            regional_adjustment=1.12,
-            waste_factor=0.05,
-            source="OpenConstructionEstimate",
-            source_date="2024-05-01",  # Intentionally old to trigger stale warning
-            confidence=0.82
-        ),
-        CostLineItem(
-            item="Countertop",
-            quantity=48,
-            unit="SF",
-            material_unit_cost=65.0 * material_multiplier,
-            labor_unit_cost=35.0,
-            regional_adjustment=1.12,
-            waste_factor=0.10,
-            source="OpenConstructionEstimate",
-            source_date="2026-08-01",
-            confidence=0.85
-        )
+    # Layer A: Simulated Retail Material Data (Home Depot CA)
+    drywall_retail_price = 17.98 # CAD per sheet
+    cabinet_retail_price = 349.00 # CAD per LF base
+    
+    # Layer B/C: Work Assemblies using hybrid pricing
+    assemblies = [
+        {
+            "assembly": "Install Drywall Interior Wall",
+            "quantity": 1000,
+            "unit": "SF",
+            "material_unit_cost": drywall_retail_price / 32, # price per SF approx
+            "labor_unit_cost": 1.50, # DDC CWICR benchmark
+            "equipment_unit_cost": 0.10,
+            "waste_factor": 0.10,
+            "delivery_cost": 75.0,
+            "regional_adjustment": 1.05,
+            "source": "DDC_CWICR + HomeDepotCA",
+            "source_date": "2026-08-01"
+        },
+        {
+            "assembly": "Cabinet Replacement",
+            "quantity": 24,
+            "unit": "LF",
+            "material_unit_cost": cabinet_retail_price * material_multiplier,
+            "labor_unit_cost": 95.0, # RSMeans benchmark
+            "equipment_unit_cost": 5.0,
+            "waste_factor": 0.05,
+            "delivery_cost": 150.0,
+            "regional_adjustment": 1.12,
+            "source": "RSMeans + HomeDepotCA",
+            "source_date": "2026-08-01"
+        }
     ]
+    
+    line_items = []
     
     # Deterministic Total Calculation
     min_total = 0
     max_total = 0
-    cat_totals = {"Cabinetry": 0, "Labor": 0, "Countertops": 0, "Other": 0}
+    cat_totals = {"Material": 0, "Labor": 0, "Equipment": 0, "Waste": 0, "Delivery": 0, "OH&P": 0}
     
     stale_warnings = []
     
-    for item in line_items:
-        # Arithmetic logic check
-        material_cost = item.material_unit_cost * item.quantity
-        labor_cost = item.labor_unit_cost * item.quantity
+    for asm in assemblies:
+        # Calculate raw costs
+        material_cost = asm["material_unit_cost"] * asm["quantity"]
+        labor_cost = asm["labor_unit_cost"] * asm["quantity"]
+        equipment_cost = asm["equipment_unit_cost"] * asm["quantity"]
+        waste_cost = material_cost * asm["waste_factor"]
         
-        if "Cabinet" in item.item: cat_totals["Cabinetry"] += material_cost
-        if "Countertop" in item.item: cat_totals["Countertops"] += material_cost
+        # Subtotal for assembly
+        base_cost = material_cost + labor_cost + equipment_cost + waste_cost + asm["delivery_cost"]
+        adjusted_cost = base_cost * asm["regional_adjustment"]
+        
+        # Add Contractor OH&P (Overhead & Profit) - 20%
+        ohp_cost = adjusted_cost * 0.20
+        final_cost = adjusted_cost + ohp_cost
+        
+        # Aggregate to categories
+        cat_totals["Material"] += material_cost
         cat_totals["Labor"] += labor_cost
+        cat_totals["Equipment"] += equipment_cost
+        cat_totals["Waste"] += waste_cost
+        cat_totals["Delivery"] += asm["delivery_cost"]
+        cat_totals["OH&P"] += ohp_cost
         
-        base_cost = material_cost + labor_cost
+        # Build CostLineItem for response compatibility
+        line_items.append(CostLineItem(
+            item=asm["assembly"],
+            quantity=asm["quantity"],
+            unit=asm["unit"],
+            material_unit_cost=asm["material_unit_cost"],
+            labor_unit_cost=asm["labor_unit_cost"],
+            regional_adjustment=asm["regional_adjustment"],
+            waste_factor=asm["waste_factor"],
+            source=asm["source"],
+            source_date=asm["source_date"],
+            confidence=0.88
+        ))
         
-        # Apply inflation adjustment for old data (e.g., from 2024)
-        if "2024" in item.source_date:
-            inflation_rate = 0.065 # 6.5% inflation over the last ~14 months
-            base_cost = base_cost * (1 + inflation_rate)
-            stale_warnings.append(f"Pricing data for {item.item} was 14 months old; applied +6.5% market inflation adjustment.")
-            
-        adjusted_cost = base_cost * item.regional_adjustment * (1 + item.waste_factor)
-        
-        min_total += adjusted_cost * 0.9 
-        max_total += adjusted_cost * 1.1
+        min_total += final_cost * 0.9 
+        max_total += final_cost * 1.1
 
     # Calculate cost drivers percentages
     total_raw = sum(cat_totals.values())

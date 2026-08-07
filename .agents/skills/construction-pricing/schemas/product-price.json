@@ -1,0 +1,19 @@
+{
+  "title": "Product Price",
+  "type": "object",
+  "properties": {
+    "source": { "type": "string" },
+    "product_id": { "type": "string" },
+    "sku": { "type": "string" },
+    "name": { "type": "string" },
+    "category": { "type": "string" },
+    "unit": { "type": "string" },
+    "price": { "type": "number" },
+    "currency": { "type": "string" },
+    "store": { "type": "string" },
+    "postal_code": { "type": "string" },
+    "availability": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" }
+  },
+  "required": ["source", "product_id", "name", "price", "currency", "timestamp"]
+}
