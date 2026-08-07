@@ -279,5 +279,350 @@ inventory_catalog = [
             "delivery_base": 250.0,
             "source": "Market Average"
         }
+    },
+    {
+        "id": "struct_syp",
+        "name": "Southern Yellow Pine Framing (High Wind/Load)",
+        "category": "Additions, Remodeling & Construction",
+        "subcategory": "Expansions",
+        "unit": "LF",
+        "parts_breakdown": {
+            "material_name": "Southern Yellow Pine (SYP) 2x6",
+            "retail_price": 12.50, # per 10ft
+            "unit_cost_per_lf": 1.25,
+            "source": "The Home Depot Pro",
+            "brand_spec": "Pro Grade #2 & Better SYP",
+            "tech_spec": "Higher density and specific gravity than SPF. Superior fastener-holding power.",
+            "compliance": "IBC/IRC High Wind Load"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 2.50,
+            "equipment_per_unit": 0.25,
+            "waste_factor_pct": 5,
+            "delivery_base": 150.0,
+            "source": "DDC CWICR"
+        }
+    },
+    {
+        "id": "ext_lp_smartside",
+        "name": "Engineered Wood Siding (LP SmartSide)",
+        "category": "Roofing, Siding & Gutters",
+        "subcategory": "Siding",
+        "unit": "SQ",
+        "parts_breakdown": {
+            "material_name": "LP SmartSide Lap Siding",
+            "retail_price": 185.00, # per square
+            "unit_cost_per_sf": 1.85,
+            "source": "The Home Depot",
+            "brand_spec": "Louisiana-Pacific",
+            "tech_spec": "Engineered wood strands cured with heavy-duty structural resins. Resists delamination.",
+            "compliance": "IBC Exterior Cladding"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 160.00,
+            "equipment_per_unit": 35.00,
+            "waste_factor_pct": 10,
+            "delivery_base": 180.0,
+            "source": "RSMeans"
+        }
+    },
+    {
+        "id": "metal_resilient_channel",
+        "name": "Acoustic Resilient Channels",
+        "category": "Carpentry, Flooring & Interiors",
+        "subcategory": "Walls & Ceilings",
+        "unit": "LF",
+        "parts_breakdown": {
+            "material_name": "Resilient Channel (D1007)",
+            "retail_price": 4.50, # per 12ft
+            "unit_cost_per_lf": 0.38,
+            "source": "GMS Inc. / Commercial Wholesale",
+            "brand_spec": "Bailey Metal Products",
+            "tech_spec": "Physically separates drywall from studs. Dissipates kinetic sound energy.",
+            "compliance": "NBCC STC Requirements"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 1.10,
+            "equipment_per_unit": 0.05,
+            "waste_factor_pct": 5,
+            "delivery_base": 75.0,
+            "source": "DDC CWICR"
+        }
+    },
+    {
+        "id": "metal_flex_track",
+        "name": "Curved Partition Wall (Flex-Track)",
+        "category": "Additions, Remodeling & Construction",
+        "subcategory": "Room Remodels",
+        "unit": "LF",
+        "parts_breakdown": {
+            "material_name": "Flex-Track Galvanized Steel",
+            "retail_price": 28.00, # per 10ft
+            "unit_cost_per_lf": 2.80,
+            "source": "RONA VIPpro",
+            "brand_spec": "Bailey Metal Products",
+            "tech_spec": "Allows shaping precise, identical curvatures rapidly.",
+            "compliance": "NBCC Structural Load"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 12.00,
+            "equipment_per_unit": 1.50,
+            "waste_factor_pct": 8,
+            "delivery_base": 100.0,
+            "source": "Market Average"
+        }
+    },
+    {
+        "id": "masonry_high_strength",
+        "name": "High-Strength Concrete Footings",
+        "category": "Landscaping, Yard & Outdoor Living",
+        "subcategory": "Hardscaping & Paving",
+        "unit": "Bag",
+        "parts_breakdown": {
+            "material_name": "5000 PSI High-Strength Concrete (80lb)",
+            "retail_price": 7.50,
+            "unit_cost_per_ea": 7.50,
+            "source": "The Home Depot",
+            "brand_spec": "Quikrete / Sakrete",
+            "tech_spec": "Engineered for 4,000 to 5,000 PSI. Used for load-bearing footings.",
+            "compliance": "IBC Concrete Construction"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 12.00, # mixing and pouring
+            "equipment_per_unit": 2.50,
+            "waste_factor_pct": 5,
+            "delivery_base": 90.0,
+            "source": "RSMeans"
+        }
+    },
+    {
+        "id": "masonry_planislope",
+        "name": "Polymer-Modified Shower Pan Mortar",
+        "category": "Carpentry, Flooring & Interiors",
+        "subcategory": "Flooring",
+        "unit": "Bag",
+        "parts_breakdown": {
+            "material_name": "Planislope RS Rapid-Setting Mortar",
+            "retail_price": 22.00,
+            "unit_cost_per_ea": 22.00,
+            "source": "Wholesale Tile Supply",
+            "brand_spec": "Mapei",
+            "tech_spec": "Dry-pack mortar enhanced with synthetic polymers to increase adhesion & flexibility.",
+            "compliance": "Tile Council of North America (TCNA)"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 25.00,
+            "equipment_per_unit": 1.00,
+            "waste_factor_pct": 5,
+            "delivery_base": 40.0,
+            "source": "DDC CWICR"
+        }
+    },
+    {
+        "id": "masonry_sonotubes",
+        "name": "Cylindrical Concrete Column Forms",
+        "category": "Additions, Remodeling & Construction",
+        "subcategory": "Site Preparation",
+        "unit": "LF",
+        "parts_breakdown": {
+            "material_name": "10-inch Fiber Concrete Forms (Sonotubes)",
+            "retail_price": 12.00, # per 4ft tube
+            "unit_cost_per_lf": 3.00,
+            "source": "RONA",
+            "brand_spec": "Bomix / Quikrete",
+            "tech_spec": "Spirally wound cardboard engineered for hydrostatic pressure. Biodegradable.",
+            "compliance": "IBC Footing Standards"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 4.00,
+            "equipment_per_unit": 0.0,
+            "waste_factor_pct": 10,
+            "delivery_base": 50.0,
+            "source": "Market Average"
+        }
+    },
+    {
+        "id": "masonry_rebar",
+        "name": "Concrete Reinforcement (Rebar)",
+        "category": "Additions, Remodeling & Construction",
+        "subcategory": "Site Preparation",
+        "unit": "LF",
+        "parts_breakdown": {
+            "material_name": "Ribbed Masonry Rebar (1/2 in.)",
+            "retail_price": 8.50, # per 10ft
+            "unit_cost_per_lf": 0.85,
+            "source": "The Home Depot Pro",
+            "brand_spec": "Metaltech",
+            "tech_spec": "Raised ridges lock into concrete matrix for tensile strength.",
+            "compliance": "ASTM A615"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 1.25,
+            "equipment_per_unit": 0.25,
+            "waste_factor_pct": 10,
+            "delivery_base": 120.0,
+            "source": "DDC CWICR"
+        }
+    },
+    {
+        "id": "fastener_timberlok",
+        "name": "Heavy Timber Structural Fastening",
+        "category": "Additions, Remodeling & Construction",
+        "subcategory": "Room Remodels",
+        "unit": "EA",
+        "parts_breakdown": {
+            "material_name": "TimberLOK Heavy-Duty Wood Screws",
+            "retail_price": 42.00, # box of 50
+            "unit_cost_per_ea": 0.84,
+            "source": "The Home Depot Pro",
+            "brand_spec": "FastenMaster",
+            "tech_spec": "Replaces 3/8-inch lag bolts. Hex-washer head, massive clamping force.",
+            "compliance": "Certified for ACQ wood"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 0.40,
+            "equipment_per_unit": 0.05,
+            "waste_factor_pct": 2,
+            "delivery_base": 0.0,
+            "source": "Internal Estimator"
+        }
+    },
+    {
+        "id": "fastener_simpson",
+        "name": "Hurricane Ties & Connectors",
+        "category": "Roofing, Siding & Gutters",
+        "subcategory": "Roofing",
+        "unit": "EA",
+        "parts_breakdown": {
+            "material_name": "H2.5A Z-Max Hurricane Tie",
+            "retail_price": 1.15,
+            "unit_cost_per_ea": 1.15,
+            "source": "RONA VIPpro",
+            "brand_spec": "Simpson Strong-Tie",
+            "tech_spec": "Z-Max hot-dipped galvanization for highly corrosive exterior environments.",
+            "compliance": "High Wind / Seismic Code"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 1.80,
+            "equipment_per_unit": 0.10,
+            "waste_factor_pct": 0,
+            "delivery_base": 0.0,
+            "source": "RSMeans"
+        }
+    },
+    {
+        "id": "insul_eps",
+        "name": "Basement Wall Continuous Insulation (EPS)",
+        "category": "Carpentry, Flooring & Interiors",
+        "subcategory": "Insulation",
+        "unit": "SF",
+        "parts_breakdown": {
+            "material_name": "EPS Rigid Foam (R-3.8/inch)",
+            "retail_price": 18.00, # 4x8 sheet
+            "unit_cost_per_sf": 0.56,
+            "source": "The Home Depot",
+            "brand_spec": "Cellofoam",
+            "tech_spec": "Expanded Polystyrene. Vapor permeable for basement retrofits.",
+            "compliance": "ASTM C578"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 0.90,
+            "equipment_per_unit": 0.05,
+            "waste_factor_pct": 8,
+            "delivery_base": 90.0,
+            "source": "DDC CWICR"
+        }
+    },
+    {
+        "id": "insul_polyiso",
+        "name": "Exterior Continuous Insulation (Polyiso)",
+        "category": "Roofing, Siding & Gutters",
+        "subcategory": "Siding",
+        "unit": "SF",
+        "parts_breakdown": {
+            "material_name": "Rmax Pro Select Polyiso (R-6.5/inch)",
+            "retail_price": 35.00, # 4x8 sheet
+            "unit_cost_per_sf": 1.09,
+            "source": "Commercial Wholesale",
+            "brand_spec": "Sika",
+            "tech_spec": "Highest R-value per inch. Aluminum facers act as radiant barrier & vapor retarder.",
+            "compliance": "IECC Thermal Bridging"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 1.15,
+            "equipment_per_unit": 0.10,
+            "waste_factor_pct": 10,
+            "delivery_base": 120.0,
+            "source": "RSMeans"
+        }
+    },
+    {
+        "id": "drywall_glasroc",
+        "name": "Elevator / Stairwell Shaftliner",
+        "category": "Additions, Remodeling & Construction",
+        "subcategory": "Room Remodels",
+        "unit": "SF",
+        "parts_breakdown": {
+            "material_name": "GlasRoc Shaftliner (1-inch thick)",
+            "retail_price": 45.00, # 2x8 panel
+            "unit_cost_per_sf": 2.81,
+            "source": "GMS Inc. (The Home Depot subsidiary)",
+            "brand_spec": "CertainTeed",
+            "tech_spec": "Moisture-resistant, non-combustible gypsum core encased in reinforced fiberglass mat.",
+            "compliance": "Area Separation Wall Fire Code"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 3.50,
+            "equipment_per_unit": 0.50,
+            "waste_factor_pct": 15,
+            "delivery_base": 200.0,
+            "source": "DDC CWICR"
+        }
+    },
+    {
+        "id": "cladding_novik",
+        "name": "Faux Stone Veneer Installation",
+        "category": "Roofing, Siding & Gutters",
+        "subcategory": "Siding",
+        "unit": "SF",
+        "parts_breakdown": {
+            "material_name": "Stacked Stone Polymer Veneer",
+            "retail_price": 14.50, # per sf
+            "unit_cost_per_sf": 14.50,
+            "source": "RONA",
+            "brand_spec": "Novik",
+            "tech_spec": "Injection-molded polymer mimicing rough-sawn stone aesthetics at a fraction of weight.",
+            "compliance": "IBC Exterior Cladding"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 4.50,
+            "equipment_per_unit": 0.25,
+            "waste_factor_pct": 12,
+            "delivery_base": 150.0,
+            "source": "Market Average"
+        }
+    },
+    {
+        "id": "waterproofing_blueskin",
+        "name": "Elastomeric Asphalt Foundation Membrane",
+        "category": "Plumbing, Water & Septic",
+        "subcategory": "Core Plumbing",
+        "unit": "SF",
+        "parts_breakdown": {
+            "material_name": "Blueskin WP200 (Peel and Stick)",
+            "retail_price": 195.00, # per 100sf roll
+            "unit_cost_per_sf": 1.95,
+            "source": "The Home Depot",
+            "brand_spec": "Henry",
+            "tech_spec": "SBS-rubberized asphalt. Self-sealing compound if punctured.",
+            "compliance": "Subterranean Waterproofing Code"
+        },
+        "installation_breakdown": {
+            "labor_rate_per_unit": 2.25,
+            "equipment_per_unit": 0.15,
+            "waste_factor_pct": 5,
+            "delivery_base": 75.0,
+            "source": "DDC CWICR"
+        }
     }
 ]
