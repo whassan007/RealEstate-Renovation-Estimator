@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "wael-bot"
+  },
+  "targets": {
+    "wael-bot": {
+      "hosting": {
+        "realestate": [
+          "realestate-wael-bot"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+digraph CursorOrchestration {
+  rankdir=LR;
+  node [shape=box, style=filled, fillcolor=lightblue];
+  "ollama-studio" [shape=ellipse, fillcolor=lightgrey, label="ollama-studio"];
+  "ollama-dgx-spark" [shape=ellipse, fillcolor=lightgrey, label="ollama-dgx-spark"];
+  "UI/UX & Frontend" [fillcolor=white];
+  "studio_agent" [fillcolor=gold];
+  "UI/UX & Frontend" -> "studio_agent" [label="routes to"];
+  "studio_agent" -> "ollama-studio" [style=dashed, label="uses"];
+  "Formal Logic & Compliance (Regentic)" [fillcolor=white];
+  "dgx_agent" [fillcolor=gold];
+  "Formal Logic & Compliance (Regentic)" -> "dgx_agent" [label="routes to"];
+  "dgx_agent" -> "ollama-dgx-spark" [style=dashed, label="uses"];
+  "Core Architecture & Refactoring" [fillcolor=white];
+  "dgx_agent" [fillcolor=gold];
+  "Core Architecture & Refactoring" -> "dgx_agent" [label="routes to"];
+  "dgx_agent" -> "ollama-dgx-spark" [style=dashed, label="uses"];
+  "General Documentation & Scripts" [fillcolor=white];
+  "studio_agent" [fillcolor=gold];
+  "General Documentation & Scripts" -> "studio_agent" [label="routes to"];
+  "studio_agent" -> "ollama-studio" [style=dashed, label="uses"];
+}

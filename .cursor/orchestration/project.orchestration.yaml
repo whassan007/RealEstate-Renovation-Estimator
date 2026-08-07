@@ -1,0 +1,28 @@
+version: "1.0"
+orchestration:
+  routing:
+    - domain: "UI/UX & Frontend"
+      match_files: ["**/*.tsx", "**/*.css", "**/*.html", "**/ui/**"]
+      preferred_agent: "studio_agent"
+      reason: "High-frequency interaction requires low-latency local Studio compute."
+
+    - domain: "Formal Logic & Compliance (Regentic)"
+      match_files: ["**/logic/**", "**/compliance/**", "**/*.logic", "**/*.regentic"]
+      preferred_agent: "dgx_agent"
+      reason: "Requires heavy compute for formal validation and state-space analysis."
+
+    - domain: "Core Architecture & Refactoring"
+      match_files: ["**/src/core/**", "**/arch/**", "**/*.rs", "**/*.cpp"]
+      preferred_agent: "dgx_agent"
+      reason: "Complex dependency resolution and structural reasoning benefit from DGX RTX throughput."
+
+    - domain: "General Documentation & Scripts"
+      match_files: ["**/*.md", "**/*.sh", "**/*.json"]
+      preferred_agent: "studio_agent"
+      reason: "Lightweight text processing handled locally."
+
+  default_agent: "studio_agent"
+
+  hw_affinity:
+    studio_agent: "ollama-studio"
+    dgx_agent: "ollama-dgx-spark"
