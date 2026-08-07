@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
 export default function CostBrowser() {
   const { t } = useLanguage();
   const [inventory, setInventory] = useState([]);
@@ -8,7 +10,7 @@ export default function CostBrowser() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/inventory')
+    fetch(`${API_BASE}/inventory`)
       .then(res => res.json())
       .then(data => {
         setInventory(data.inventory);
@@ -25,7 +27,7 @@ export default function CostBrowser() {
   }
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'Inter, sans-serif', background: '#f8fafc', minHeight: '100vh' }}>
+    <div style={{ fontFamily: 'Inter, sans-serif' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <h1 style={{ color: '#0f172a', marginBottom: '1.5rem' }}>{t('admin_cost_browser') || 'Cost Transparency Browser'}</h1>
         

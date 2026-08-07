@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
+import CostBrowser from './CostBrowser';
 
 export default function ContractorDashboard() {
   const { t } = useLanguage();
@@ -7,6 +8,7 @@ export default function ContractorDashboard() {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [lineItems, setLineItems] = useState([]);
   const [markup, setMarkup] = useState(20);
+  const [activeTab, setActiveTab] = useState('quotes'); // 'quotes' or 'inventory'
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('quoteRequests') || '[]');
@@ -68,10 +70,41 @@ export default function ContractorDashboard() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'Inter, sans-serif', background: '#f8fafc' }}>
-      {/* Sidebar - Request List */}
+      {/* Sidebar */}
       <div className="glass" style={{ width: '320px', borderRight: '1px solid rgba(0,0,0,0.05)', background: '#ffffff', padding: '1.5rem', zIndex: 10 }}>
-        <h3 style={{ margin: '0 0 1.5rem 0', color: '#1e293b' }}>{t('quote_requests')} <span style={{ background: '#e2e8f0', padding: '2px 8px', borderRadius: '12px', fontSize: '0.8em' }}>{requests.length}</span></h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <h3 style={{ margin: '0 0 1rem 0', color: '#1e293b' }}>Dashboard</h3>
+        
+        {/* Navigation Tabs */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '2rem' }}>
+          <button 
+            onClick={() => setActiveTab('quotes')}
+            style={{ 
+              textAlign: 'left', padding: '0.75rem', borderRadius: '8px', cursor: 'pointer', border: 'none',
+              background: activeTab === 'quotes' ? '#3b82f6' : 'transparent',
+              color: activeTab === 'quotes' ? 'white' : '#475569',
+              fontWeight: activeTab === 'quotes' ? 'bold' : 'normal'
+            }}
+          >
+            {t('quote_requests')} <span style={{ background: activeTab === 'quotes' ? 'rgba(255,255,255,0.3)' : '#e2e8f0', padding: '2px 8px', borderRadius: '12px', fontSize: '0.8em', marginLeft: '8px' }}>{requests.length}</span>
+          </button>
+          
+          <button 
+            onClick={() => setActiveTab('inventory')}
+            style={{ 
+              textAlign: 'left', padding: '0.75rem', borderRadius: '8px', cursor: 'pointer', border: 'none',
+              background: activeTab === 'inventory' ? '#3b82f6' : 'transparent',
+              color: activeTab === 'inventory' ? 'white' : '#475569',
+              fontWeight: activeTab === 'inventory' ? 'bold' : 'normal'
+            }}
+          >
+            {t('admin_cost_browser') || 'Cost Transparency Browser'}
+          </button>
+        </div>
+
+        {activeTab === 'quotes' && (
+          <>
+            <h4 style={{ margin: '0 0 1rem 0', color: '#64748b', fontSize: '0.85em', textTransform: 'uppercase' }}>Recent Requests</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           {requests.map(req => (
             <div 
               key={req.id} 
@@ -94,11 +127,15 @@ export default function ContractorDashboard() {
           ))}
           {requests.length === 0 && <p style={{color: '#888'}}>No quote requests yet.</p>}
         </div>
+          </>
+        )}
       </div>
 
       {/* Main Workspace */}
       <div style={{ flex: 1, padding: '2rem', background: '#f8fafc', overflowY: 'auto' }}>
-        {selectedRequest ? (
+        {activeTab === 'inventory' ? (
+          <CostBrowser />
+        ) : selectedRequest ? (
           <div className="animate-fade-in" style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h2>{t('estimate_workspace')}: {selectedRequest.address}</h2>
