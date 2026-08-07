@@ -125,7 +125,14 @@ export default function ContractorDashboard() {
               </div>
             </div>
           ))}
-          {requests.length === 0 && <p style={{color: '#888'}}>No quote requests yet.</p>}
+          {requests.length === 0 && (
+            <div style={{ textAlign: 'center', marginTop: '1rem', padding: '1rem', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e1' }}>
+              <p style={{ color: '#64748b', marginBottom: '1rem', fontSize: '0.9em' }}>No quote requests yet.</p>
+              <a href="/" style={{ display: 'inline-block', padding: '0.5rem 1rem', background: '#3b82f6', color: 'white', textDecoration: 'none', borderRadius: '6px', fontSize: '0.85em', fontWeight: 'bold' }}>
+                Create a Guestimate
+              </a>
+            </div>
+          )}
         </div>
           </>
         )}
